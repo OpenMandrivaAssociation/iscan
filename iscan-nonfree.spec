@@ -51,7 +51,7 @@ used with this software
 Version:        1.36.0
 Summary:        Image Scan! for Linux data files
 Group:          System/Kernel and hardware
-Requires:       libxslt
+Requires:       xsltproc
 BuildArch:      noarch
 
 %description	data
