@@ -2,6 +2,8 @@
 %define ver_main 2.30.1
 %define plugindir %(gimptool-2.0 --gimpplugindir 2> /dev/null)
 %define oname iscan
+%define _disable_lto 1
+%define _disable_rebuild_configure 1
 
 Name:           iscan-nonfree
 Version:        %{ver_main}
