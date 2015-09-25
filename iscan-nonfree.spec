@@ -13,7 +13,7 @@ Url:            http://download.ebz.epson.net/dsc/search/01/search/?OSC=LX
 Source0:        https://download3.ebz.epson.net/dsc/f/03/00/03/61/59/a3f8b8d60e8702a1c5bf3977d018cc2336e308a8/%{oname}_%{version}-1.tar.gz
 Source1:        https://download3.ebz.epson.net/dsc/f/03/00/03/61/59/646738a219f7354bf3268897385f6ce48c0776bf/%{oname}-data_%{ver_data}-1.tar.gz
 Source2:        epkowa.conf
-Source100:	iscan.rpmlintrc
+Source100:	%{name}.rpmlintrc
 # PATCH-FIX-UPSTREAM libpng15.patch (export from arch) -- Build iscan against libpng15 by giovanni
 Patch0:         libpng15.patch
 BuildRequires:  gettext
