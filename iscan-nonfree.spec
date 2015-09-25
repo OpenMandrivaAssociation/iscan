@@ -21,6 +21,7 @@ Patch0:         libpng15.patch
 BuildRequires:  gettext
 BuildRequires:  jpeg-devel
 BuildRequires:  libtool
+BuildRequires:  libtool-devel
 BuildRequires:  systemd
 BuildRequires:  pkgconfig(gimp-2.0)
 BuildRequires:  pkgconfig(gtk+-2.0)
