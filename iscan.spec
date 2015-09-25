@@ -1,41 +1,22 @@
-#
-# spec file for package iscan
-#
-# Copyright (c) 2015 SUSE LINUX GmbH, Nuernberg, Germany.
-#
-# All modifications and additions to the file contributed by third parties
-# remain the property of their copyright owners, unless otherwise agreed
-# upon. The license for this file, and modifications and additions to the
-# file, is the same license as for the pristine package itself (unless the
-# license for the pristine package is not an Open Source License, in which
-# case the license is the MIT License). An "Open Source License" is a
-# license that conforms to the Open Source Definition (Version 1.9)
-# published by the Open Source Initiative.
-
-# Please submit bugfixes or comments via http://bugs.opensuse.org/
-#
-
-
 %define ver_data 1.36.0
 %define plugindir %(gimptool-2.0 --gimpplugindir 2> /dev/null)
-Name:           iscan
+Name:           iscan-nonfree
 Version:        2.30.1
-Release:        5.1
+Release:        1
 Summary:        EPSON Image Scan! front-end for scanners and all-in-ones
 License:        GPL-2.0 and AVASYSPL
-Group:          Hardware/Scanner
+Group:          System/Kernel and hardware
 Url:            http://download.ebz.epson.net/dsc/search/01/search/?OSC=LX
 Source0:        https://download3.ebz.epson.net/dsc/f/03/00/03/61/59/a3f8b8d60e8702a1c5bf3977d018cc2336e308a8/%{name}_%{version}-1.tar.gz
 Source1:        https://download3.ebz.epson.net/dsc/f/03/00/03/61/59/646738a219f7354bf3268897385f6ce48c0776bf/%{name}-data_%{ver_data}-1.tar.gz
 Source2:        epkowa.conf
+Source100:	iscan.rpmlintrc
 # PATCH-FIX-UPSTREAM libpng15.patch (export from arch) -- Build iscan against libpng15 by giovanni
 Patch0:         libpng15.patch
-BuildRequires:  gcc-c++
-BuildRequires:  gettext-tools
-BuildRequires:  libjpeg-devel
+BuildRequires:  gettext
+BuildRequires:  jpeg-devel
 BuildRequires:  libtool
 BuildRequires:  systemd
-BuildRequires:  update-desktop-files
 BuildRequires:  pkgconfig(gimp-2.0)
 BuildRequires:  pkgconfig(gtk+-2.0)
 BuildRequires:  pkgconfig(libpng16)
@@ -46,6 +27,7 @@ BuildRequires:  pkgconfig(sane-backends)
 BuildRequires:  pkgconfig(udev)
 Requires:       %{name}-data
 Requires(post): systemd
+Conflicts:	sane-backends-iscan
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 
 %description
@@ -63,7 +45,7 @@ used with this software
 %package		data
 Version:        1.36.0
 Summary:        Image Scan! for Linux data files
-Group:          Hardware/Scanner
+Group:          System/Kernel and hardware
 Requires:       libxslt
 BuildArch:      noarch
 
@@ -85,7 +67,7 @@ ln -s libesmod-x86_64.c2.so non-free/libesmod-x86_64.so
 %build
 # Build iscan
 export LDFLAGS="${LDFLAGS} -ldl -lpng16"
-%configure \
+%configure2_5x \
   --sbindir=%{_bindir} \
   --enable-dependency-reduction \
   --enable-frontend \
@@ -95,13 +77,13 @@ export LDFLAGS="${LDFLAGS} -ldl -lpng16"
   --enable-gimp \
   --enable-static=no
 
-make  %{?_smp_mflags}
+%make
 
 # Build data
 cd %{name}-data-%{ver_data}
-%configure --libdir="%{_prefix}/lib"
-make  %{?_smp_mflags}
-make %{?_smp_mflags} %{name}-data.hwdb
+%configure2_5x --libdir="%{_prefix}/lib"
+%make
+%make %{name}-data.hwdb
 
 %install
 # iscan: install files
@@ -112,8 +94,6 @@ install -D -m 0644 backend/epkowa.conf %{buildroot}%{_sysconfdir}/sane.d/epkowa.
 install -D -m 0644 %{SOURCE2} %{buildroot}%{_sysconfdir}/sane.d/dll.d/epkowa.conf
 
 find %{buildroot} \( -name \*.la -o -name \*.so  \) -exec rm {} \;
-
-%suse_update_desktop_file -i %{name} Graphics Scanning
 
 %find_lang %{name}
 
@@ -147,10 +127,9 @@ fi
 %{_libdir}/libesmod.so*
 %{_libdir}/sane/libsane-epkowa.so*
 %{_libdir}/gimp/2.0/plug-ins/iscan
-%{_datadir}/applications/%{name}.desktop
-%{_mandir}/man1/iscan.1.gz
-%{_mandir}/man5/sane-epkowa.5.gz
-%{_mandir}/man8/iscan-registry.8.gz
+%{_mandir}/man1/iscan.1.*
+%{_mandir}/man5/sane-epkowa.5.*
+%{_mandir}/man8/iscan-registry.8.*
 
 %files data
 %defattr(-, root, root)
@@ -158,13 +137,7 @@ fi
 %doc %{name}-data-%{ver_data}/NEWS
 %doc %{name}-data-%{ver_data}/KNOWN-PROBLEMS
 %doc %{name}-data-%{ver_data}/SUPPORTED-DEVICES
-%{_libexecdir}/iscan-data
+%{_prefix}/lib/iscan-data
 %{_datadir}/iscan-data
 %{_udevhwdbdir}/%{name}-data.hwdb
 
-%changelog
-* Thu Jun 25 2015 avvissu@yandex.ru
-- Fix build on openSUSE > 13.2:
-  * create symbolic links on libesmod*.c2
-* Wed Apr  8 2015 avvissu@yandex.ru
-- Initial release
