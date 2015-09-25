@@ -31,7 +31,7 @@ BuildRequires:  pkgconfig(libusb-1.0)
 BuildRequires:  pkgconfig(libxml-2.0)
 BuildRequires:  pkgconfig(sane-backends)
 BuildRequires:  pkgconfig(udev)
-Requires:       %{oname}-data
+Requires:       %{name}-data
 Requires(post): systemd
 Conflicts:	sane-backends-iscan
 
