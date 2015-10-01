@@ -6,7 +6,7 @@
 
 Name:           iscan
 Version:        %{ver_main}
-Release:        1
+Release:        2
 Summary:        EPSON Image Scan! front-end for scanners and all-in-ones
 License:        GPL-2.0 and AVASYSPL
 Group:          System/Kernel and hardware
