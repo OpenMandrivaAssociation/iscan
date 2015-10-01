@@ -61,8 +61,8 @@ device information and policy file generation logic.
 Image Scan! for Linux will not function without this package.
 
 %prep
-%setup -q -n %{oname}-%{ver_main}
-%setup -q -D -T -a 1 -n %{oname}-%{ver_main}
+%setup -q -n %{name}-%{ver_main}
+%setup -q -D -T -a 1 -n %{name}-%{ver_main}
 
 %patch0
 
@@ -85,10 +85,10 @@ export LDFLAGS="${LDFLAGS} -ldl -lpng16"
 %make
 
 # Build data
-cd %{oname}-data-%{ver_data}
+cd %{name}-data-%{ver_data}
 %configure --libdir="%{_prefix}/lib"
 %make
-%make %{oname}-data.hwdb
+%make %{name}-data.hwdb
 
 %install
 # iscan: install files
@@ -100,15 +100,15 @@ install -D -m 0644 %{SOURCE2} %{buildroot}%{_sysconfdir}/sane.d/dll.d/epkowa.con
 
 find %{buildroot} \( -name \*.la -o -name \*.so  \) -exec rm {} \;
 
-%find_lang %{oname}
+%find_lang %{name}
 
 # data: install files
-cd %{oname}-data-%{ver_data}
+cd %{name}-data-%{ver_data}
 make DESTDIR=%{buildroot} install %{?_smp_mflags}
 
-install -D -m 0644 %{oname}-data.hwdb %{buildroot}/%{_udevhwdbdir}/%{oname}-data.hwdb
+install -D -m 0644 %{name}-data.hwdb %{buildroot}/%{_udevhwdbdir}/%{name}-data.hwdb
 
-%files -f %{oname}.lang
+%files -f %{name}.lang
 %doc NEWS README AUTHORS COPYING
 %doc non-free/AVASYSPL.en.txt
 %doc doc/xinetd.sane
@@ -116,8 +116,8 @@ install -D -m 0644 %{oname}-data.hwdb %{buildroot}/%{_udevhwdbdir}/%{oname}-data
 %dir %{_sysconfdir}/sane.d/dll.d
 %config %{_sysconfdir}/sane.d/epkowa.conf
 %config %{_sysconfdir}/sane.d/dll.d/epkowa.conf
-%{_bindir}/%{oname}
-%{_bindir}/%{oname}-registry
+%{_bindir}/%{name}
+%{_bindir}/%{name}-registry
 %{_libdir}/libesmod.so*
 %{_libdir}/sane/libsane-epkowa.so*
 %{_libdir}/gimp/2.0/plug-ins/iscan
@@ -126,10 +126,10 @@ install -D -m 0644 %{oname}-data.hwdb %{buildroot}/%{_udevhwdbdir}/%{oname}-data
 %{_mandir}/man8/iscan-registry.8.*
 
 %files data
-%doc %{oname}-data-%{ver_data}/COPYING
-%doc %{oname}-data-%{ver_data}/NEWS
-%doc %{oname}-data-%{ver_data}/KNOWN-PROBLEMS
-%doc %{oname}-data-%{ver_data}/SUPPORTED-DEVICES
+%doc %{name}-data-%{ver_data}/COPYING
+%doc %{name}-data-%{ver_data}/NEWS
+%doc %{name}-data-%{ver_data}/KNOWN-PROBLEMS
+%doc %{name}-data-%{ver_data}/SUPPORTED-DEVICES
 %{_prefix}/lib/iscan-data
 %{_datadir}/iscan-data
-%{_udevhwdbdir}/%{oname}-data.hwdb
+%{_udevhwdbdir}/%{name}-data.hwdb
