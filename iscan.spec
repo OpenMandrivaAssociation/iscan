@@ -1,19 +1,18 @@
 %define ver_data 1.36.0
 %define ver_main 2.30.1
 %define plugindir %(gimptool-2.0 --gimpplugindir 2> /dev/null)
-%define oname iscan
 %define _disable_lto 1
 %define _disable_rebuild_configure 1
 
-Name:           iscan-nonfree
+Name:           iscan
 Version:        %{ver_main}
 Release:        1
 Summary:        EPSON Image Scan! front-end for scanners and all-in-ones
 License:        GPL-2.0 and AVASYSPL
 Group:          System/Kernel and hardware
 Url:            http://download.ebz.epson.net/dsc/search/01/search/?OSC=LX
-Source0:        https://download3.ebz.epson.net/dsc/f/03/00/03/61/59/a3f8b8d60e8702a1c5bf3977d018cc2336e308a8/%{oname}_%{version}-1.tar.gz
-Source1:        https://download3.ebz.epson.net/dsc/f/03/00/03/61/59/646738a219f7354bf3268897385f6ce48c0776bf/%{oname}-data_%{ver_data}-1.tar.gz
+Source0:        https://download3.ebz.epson.net/dsc/f/03/00/03/61/59/a3f8b8d60e8702a1c5bf3977d018cc2336e308a8/%{name}_%{version}-1.tar.gz
+Source1:        https://download3.ebz.epson.net/dsc/f/03/00/03/61/59/646738a219f7354bf3268897385f6ce48c0776bf/%{name}-data_%{ver_data}-1.tar.gz
 Source2:        epkowa.conf
 Source100:	%{name}.rpmlintrc
 # PATCH-FIX-UPSTREAM libpng15.patch (export from arch) -- Build iscan against libpng15 by giovanni
@@ -32,8 +31,9 @@ BuildRequires:  pkgconfig(libxml-2.0)
 BuildRequires:  pkgconfig(sane-backends)
 BuildRequires:  pkgconfig(udev)
 Requires:       %{name}-data
-Requires(post): systemd
 Conflicts:	sane-backends-iscan
+Provides:	iscan-nonfree = %{EVRD}
+Obsoletes:	iscan-nonfree < %{EVRD}
 
 %description
 Image Scan! is a graphical scanner utility for people that do not need all
@@ -47,14 +47,14 @@ standard compliant scanner utility.
 Note that several scanners require a non-free plugin before they can be
 used with this software
 
-%package		data
-Version:        1.36.0
-Summary:        Image Scan! for Linux data files
-Group:          System/Kernel and hardware
-Requires:       xsltproc
-BuildArch:      noarch
+%package data
+Version:	%{ver_data}
+Summary:	Image Scan! for Linux data files
+Group:		System/Kernel and hardware
+Requires:	xsltproc
+BuildArch:	noarch
 
-%description	data
+%description data
 Provides the necessary support files for Image Scan! for Linux, including
 device information and policy file generation logic.
 
@@ -72,7 +72,7 @@ ln -s libesmod-x86_64.c2.so non-free/libesmod-x86_64.so
 %build
 # Build iscan
 export LDFLAGS="${LDFLAGS} -ldl -lpng16"
-%configure2_5x \
+%configure \
   --sbindir=%{_bindir} \
   --enable-dependency-reduction \
   --enable-frontend \
@@ -86,7 +86,7 @@ export LDFLAGS="${LDFLAGS} -ldl -lpng16"
 
 # Build data
 cd %{oname}-data-%{ver_data}
-%configure2_5x --libdir="%{_prefix}/lib"
+%configure --libdir="%{_prefix}/lib"
 %make
 %make %{oname}-data.hwdb
 
@@ -108,18 +108,7 @@ make DESTDIR=%{buildroot} install %{?_smp_mflags}
 
 install -D -m 0644 %{oname}-data.hwdb %{buildroot}/%{_udevhwdbdir}/%{oname}-data.hwdb
 
-%post
-/sbin/ldconfig
-%udev_hwdb_update
-
-%postun
-/sbin/ldconfig
-if [ $1 -eq 0 ]; then
-	%udev_hwdb_update
-fi
-
 %files -f %{oname}.lang
-%defattr(-,root,root,-)
 %doc NEWS README AUTHORS COPYING
 %doc non-free/AVASYSPL.en.txt
 %doc doc/xinetd.sane
@@ -137,7 +126,6 @@ fi
 %{_mandir}/man8/iscan-registry.8.*
 
 %files data
-%defattr(-, root, root)
 %doc %{oname}-data-%{ver_data}/COPYING
 %doc %{oname}-data-%{ver_data}/NEWS
 %doc %{oname}-data-%{ver_data}/KNOWN-PROBLEMS
@@ -145,4 +133,3 @@ fi
 %{_prefix}/lib/iscan-data
 %{_datadir}/iscan-data
 %{_udevhwdbdir}/%{oname}-data.hwdb
-
