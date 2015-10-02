@@ -102,7 +102,7 @@ find %{buildroot} \( -name \*.la -o -name \*.so  \) -exec rm {} \;
 %find_lang %{oname}
 
 # data: install files
-cd %{name}-data-%{ver_data}
+cd %{oname}-data-%{ver_data}
 make DESTDIR=%{buildroot} install %{?_smp_mflags}
 
 install -D -m 0644 %{name}-data.hwdb %{buildroot}/%{_udevhwdbdir}/%{name}-data.hwdb
