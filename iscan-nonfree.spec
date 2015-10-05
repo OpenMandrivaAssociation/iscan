@@ -4,10 +4,11 @@
 %define oname iscan
 %define _disable_lto 1
 %define _disable_rebuild_configure 1
+%define __noautoprov 'libsane\\.so\\.1(.*)'
 
 Name:           %{oname}-nonfree
 Version:        %{ver_main}
-Release:        3
+Release:        4
 Summary:        EPSON Image Scan! front-end for scanners and all-in-ones
 License:        GPL-2.0 and AVASYSPL
 Group:          System/Kernel and hardware
