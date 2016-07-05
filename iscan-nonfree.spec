@@ -8,7 +8,7 @@
 
 Name:           %{oname}-nonfree
 Version:        %{ver_main}
-Release:        4
+Release:        5
 Summary:        EPSON Image Scan! front-end for scanners and all-in-ones
 License:        GPL-2.0 and AVASYSPL
 Group:          System/Kernel and hardware
@@ -68,6 +68,7 @@ Image Scan! for Linux will not function without this package.
 
 # Fix for CXX ABI different than 1002 (export from arch)
 ln -s libesmod-x86_64.c2.so non-free/libesmod-x86_64.so
+ln -sf libesmod-i386.c2.so non-free/libesmod-i386.so
 
 %build
 # Build iscan
