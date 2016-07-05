@@ -68,7 +68,6 @@ Image Scan! for Linux will not function without this package.
 
 # Fix for CXX ABI different than 1002 (export from arch)
 ln -s libesmod-x86_64.c2.so non-free/libesmod-x86_64.so
-ln -sf libesmod-i386.c2.so non-free/libesmod-i386.so
 
 %build
 # Build iscan
@@ -83,7 +82,8 @@ export LDFLAGS="${LDFLAGS} -ldl -lpng16"
   --enable-gimp \
   --enable-static=no
 
-%make
+# force ABI to 1002
+%make PACKAGE_CXX_ABI=".c2"
 
 # Build data
 cd %{oname}-data-%{ver_data}
