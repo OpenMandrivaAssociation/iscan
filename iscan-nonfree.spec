@@ -8,7 +8,7 @@
 
 Name:           %{oname}-nonfree
 Version:        %{ver_main}
-Release:        5
+Release:        6
 Summary:        EPSON Image Scan! front-end for scanners and all-in-ones
 License:        GPL-2.0 and AVASYSPL
 Group:          System/Kernel and hardware
@@ -93,7 +93,7 @@ cd %{oname}-data-%{ver_data}
 
 %install
 # iscan: install files
-make DESTDIR=%{buildroot} install %{?_smp_mflags}
+make DESTDIR=%{buildroot} PACKAGE_CXX_ABI=".c2" install %{?_smp_mflags}
 install -d %{buildroot}%{plugindir}/plug-ins
 ln -s %{_bindir}/iscan %{buildroot}%{_libdir}/gimp/2.0/plug-ins/iscan
 install -D -m 0644 backend/epkowa.conf %{buildroot}%{_sysconfdir}/sane.d/epkowa.conf
