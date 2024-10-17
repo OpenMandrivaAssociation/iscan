@@ -12,7 +12,7 @@ Release:        6
 Summary:        EPSON Image Scan! front-end for scanners and all-in-ones
 License:        GPL-2.0 and AVASYSPL
 Group:          System/Kernel and hardware
-Url:            http://download.ebz.epson.net/dsc/search/01/search/?OSC=LX
+Url:            https://download.ebz.epson.net/dsc/search/01/search/?OSC=LX
 Source0:        https://download3.ebz.epson.net/dsc/f/03/00/03/61/59/a3f8b8d60e8702a1c5bf3977d018cc2336e308a8/%{oname}_%{version}-1.tar.gz
 Source1:        https://download3.ebz.epson.net/dsc/f/03/00/03/61/59/646738a219f7354bf3268897385f6ce48c0776bf/%{oname}-data_%{ver_data}-1.tar.gz
 Source2:        epkowa.conf
